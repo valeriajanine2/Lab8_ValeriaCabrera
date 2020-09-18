@@ -39,6 +39,12 @@ public class MainLab extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         buttonGroup3 = new javax.swing.ButtonGroup();
+        menu_articulos = new javax.swing.JPopupMenu();
+        modificarArt = new javax.swing.JMenuItem();
+        eliminarArt = new javax.swing.JMenuItem();
+        menu_personas = new javax.swing.JPopupMenu();
+        modificarPer = new javax.swing.JMenuItem();
+        eliminarPer = new javax.swing.JMenuItem();
         jTabbedPane5 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jTabbedPane6 = new javax.swing.JTabbedPane();
@@ -202,6 +208,18 @@ public class MainLab extends javax.swing.JFrame {
         jt_personas = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
         jLabel92 = new javax.swing.JLabel();
+
+        modificarArt.setText("jMenuItem1");
+        menu_articulos.add(modificarArt);
+
+        eliminarArt.setText("jMenuItem1");
+        menu_articulos.add(eliminarArt);
+
+        modificarPer.setText("jMenuItem1");
+        menu_personas.add(modificarPer);
+
+        eliminarPer.setText("jMenuItem1");
+        menu_personas.add(eliminarPer);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1883,6 +1901,8 @@ public class MainLab extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_registro;
     private javax.swing.JComboBox<String> cb_registro1;
     private javax.swing.JComboBox<String> cb_registro2;
+    private javax.swing.JMenuItem eliminarArt;
+    private javax.swing.JMenuItem eliminarPer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2010,6 +2030,10 @@ public class MainLab extends javax.swing.JFrame {
     private javax.swing.JTree jt_articulos;
     private javax.swing.JTable jt_historial;
     private javax.swing.JTree jt_personas;
+    private javax.swing.JPopupMenu menu_articulos;
+    private javax.swing.JPopupMenu menu_personas;
+    private javax.swing.JMenuItem modificarArt;
+    private javax.swing.JMenuItem modificarPer;
     private javax.swing.JRadioButton rb_f;
     private javax.swing.JRadioButton rb_f1;
     private javax.swing.JRadioButton rb_f2;
