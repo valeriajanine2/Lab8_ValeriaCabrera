@@ -209,16 +209,36 @@ public class MainLab extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel92 = new javax.swing.JLabel();
 
-        modificarArt.setText("jMenuItem1");
+        modificarArt.setText("Modificar");
+        modificarArt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarArtActionPerformed(evt);
+            }
+        });
         menu_articulos.add(modificarArt);
 
-        eliminarArt.setText("jMenuItem1");
+        eliminarArt.setText("Eliminar");
+        eliminarArt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarArtActionPerformed(evt);
+            }
+        });
         menu_articulos.add(eliminarArt);
 
-        modificarPer.setText("jMenuItem1");
+        modificarPer.setText("Modificar");
+        modificarPer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarPerActionPerformed(evt);
+            }
+        });
         menu_personas.add(modificarPer);
 
-        eliminarPer.setText("jMenuItem1");
+        eliminarPer.setText("Eliminar");
+        eliminarPer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarPerActionPerformed(evt);
+            }
+        });
         menu_personas.add(eliminarPer);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1334,6 +1354,11 @@ public class MainLab extends javax.swing.JFrame {
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Juegos");
         treeNode1.add(treeNode2);
         jt_articulos.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jt_articulos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jt_articulosMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jt_articulos);
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
@@ -1360,17 +1385,26 @@ public class MainLab extends javax.swing.JFrame {
                 .addContainerGap(75, Short.MAX_VALUE))
         );
 
-        jTabbedPane5.addTab("VisualizarArticulos", jPanel14);
+        jTabbedPane5.addTab("Visualizar Articulos", jPanel14);
 
         jLabel91.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel91.setText("Visualizar Personas");
 
         treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Personas");
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Gerente");
+        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Gerente de Planta");
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Gerente de Sucursal");
+        treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("General");
         treeNode1.add(treeNode2);
         jt_personas.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jt_personas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jt_personasMouseClicked(evt);
+            }
+        });
         jScrollPane11.setViewportView(jt_personas);
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
@@ -1414,6 +1448,8 @@ public class MainLab extends javax.swing.JFrame {
 
     private void b_gerente2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_gerente2MouseClicked
 
+        //creacion de un gerentes y cuando se gardan se van actualizando en el arbol que sirve como listar
+        
         try {
             String sexo, cargo;
 
@@ -1435,7 +1471,6 @@ public class MainLab extends javax.swing.JFrame {
 
             //validacion de clau
             if (clau()) {
-                persona.add(x);
 
                 JOptionPane.showMessageDialog(this, "Gerente almacenado exitosamente");
 
@@ -1470,11 +1505,20 @@ public class MainLab extends javax.swing.JFrame {
                 DefaultMutableTreeNode nodo_gerente;    //crear un nodo
                 nodo_gerente = new DefaultMutableTreeNode((Gerente) x); //setear un elemento al nodo
 
-                
+                //agregar depende del tipo de gerente que es
                 for (int i = 0; i < raiz.getChildCount(); i++) {
                     if (raiz.getChildAt(i).toString().equals("Gerente")) {
-                        DefaultMutableTreeNode nodo =(DefaultMutableTreeNode) raiz.getChildAt(i);
-                        nodo.add(nodo_gerente);
+                        for (int j = 0; j < raiz.getChildAt(i).getChildCount(); j++) {
+                            if (x.getCargo().equals("Gerente de Planta")) {
+                                DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) raiz.getChildAt(i).getChildAt(0);
+                                nodo.add(nodo_gerente);
+                            }else{
+                                DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) raiz.getChildAt(i).getChildAt(1);
+                                nodo.add(nodo_gerente);
+                            }
+                            
+                        }
+
                     } //fin if
                 } //fin for  
                 m.reload(); //resetear el arbol
@@ -1507,10 +1551,13 @@ public class MainLab extends javax.swing.JFrame {
     }//GEN-LAST:event_b_gerente2MouseClicked
 
     private void b_generalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_generalMouseClicked
-
+        
+        //tab para crear una persona general y se agrega al arbol cuando se guarda
+        
         try {
-            String sexo,cargo;
+            String sexo;
 
+            //setear el sexo dependiendo de los radio botones
             if (rb_m3.isSelected()) {
                 sexo="M";
             }else if(rb_f3.isSelected()){
@@ -1525,7 +1572,6 @@ public class MainLab extends javax.swing.JFrame {
             //validacion de clau
 
             if (clau()) {
-                persona.add(x);
 
                 JOptionPane.showMessageDialog(this, "Persona General almacenada exitosamente");
 
@@ -1601,13 +1647,14 @@ public class MainLab extends javax.swing.JFrame {
     }//GEN-LAST:event_b_generalActionPerformed
 
     private void b_colorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_colorMouseClicked
-
+        //boton que sirve de color chooser
         b_color.setBackground(JColorChooser.showDialog(this, "Seleccione un color", Color.yellow));
 
     }//GEN-LAST:event_b_colorMouseClicked
 
     private void b_comicMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_comicMouseClicked
 
+        //boton para crear un comic y guardarlo en el arbol de los articulos
         try {
             Color c;
 
@@ -1618,7 +1665,6 @@ public class MainLab extends javax.swing.JFrame {
             //validacion de clau
 
             if (clau()) {
-                articulo.add(x);
                 
                 //agregar elementos al arbol
                 
@@ -1629,7 +1675,7 @@ public class MainLab extends javax.swing.JFrame {
 
                 
                 for (int i = 0; i < raiz.getChildCount(); i++) {
-                    if (raiz.getChildAt(i).toString().equals("Comic")) {
+                    if (raiz.getChildAt(i).toString().equals("Comics")) {
                         DefaultMutableTreeNode nodo =(DefaultMutableTreeNode) raiz.getChildAt(i);
                         nodo.add(nodo_comic);
                     } //fin if
@@ -1663,7 +1709,7 @@ public class MainLab extends javax.swing.JFrame {
     }//GEN-LAST:event_b_comicMouseClicked
 
     private void b_color1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_color1MouseClicked
-
+        //boton que sirve de color chooser
         b_color1.setBackground(JColorChooser.showDialog(this, "Seleccione un color", Color.yellow));
 
     }//GEN-LAST:event_b_color1MouseClicked
@@ -1682,6 +1728,8 @@ public class MainLab extends javax.swing.JFrame {
 
     private void b_juegoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_juegoMouseClicked
 
+        //boton para crear un juego y guardarlo en el arbol de articulos
+        
         try {
             Color c;
 
@@ -1692,24 +1740,22 @@ public class MainLab extends javax.swing.JFrame {
             //validacion de clau
 
             if (clau()) {
-                articulo.add(x);
 
                 //agregar elementos al arbol
                 
                 DefaultTreeModel m = (DefaultTreeModel) jt_articulos.getModel(); //atrapar el modelo
                 DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) m.getRoot();//atrapar su nodo raíz
-                DefaultMutableTreeNode nodo_juego;    //crear un nodo
-                nodo_juego = new DefaultMutableTreeNode((Juegos) x); //setear un elemento al nodo
+                DefaultMutableTreeNode nodo_juegos;    //crear un nodo
+                nodo_juegos = new DefaultMutableTreeNode((Juegos) x); //setear un elemento al nodo
 
                 
                 for (int i = 0; i < raiz.getChildCount(); i++) {
-                    if (raiz.getChildAt(i).toString().equals("Comic")) {
+                    if (raiz.getChildAt(i).toString().equals("Juegos")) {
                         DefaultMutableTreeNode nodo =(DefaultMutableTreeNode) raiz.getChildAt(i);
-                        nodo.add(nodo_juego);
+                        nodo.add(nodo_juegos);
                     } //fin if
                 } //fin for  
                 m.reload(); //resetear el arbol
-                JOptionPane.showMessageDialog(this, "Comic almacenado exitosamente");
 
                 
 
@@ -1736,12 +1782,16 @@ public class MainLab extends javax.swing.JFrame {
     }//GEN-LAST:event_b_juegoMouseClicked
 
     private void b_color2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_color2MouseClicked
+        //boton que sirve de color chooser
         b_color2.setBackground(JColorChooser.showDialog(this, "Seleccione un color", Color.yellow));
 
     }//GEN-LAST:event_b_color2MouseClicked
 
     private void b_enviarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_enviarMouseClicked
 
+        //boton para enviar mensajes donde se elige un emisor y un receptor y el mensaje en un text area y todo eso 
+        //lo meto a una row de la tabla de historial y con el boton se va a agregar la row a la tabla
+        
         Personas s = (Personas) cb_emisor.getSelectedItem();
         Personas r = (Personas) cb_receptor.getSelectedItem();
 
@@ -1766,7 +1816,8 @@ public class MainLab extends javax.swing.JFrame {
     }//GEN-LAST:event_b_enviarMouseClicked
 
     private void cb_personasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_personasItemStateChanged
-
+        
+        //boton para listar contactos, se garra la persona del combobox y se agarra el nombre y el rol y se agregan a la tabla de abajo
         if (evt.getStateChange()==2) {
             Personas s = (Personas) cb_personas.getSelectedItem();
 
@@ -1786,6 +1837,8 @@ public class MainLab extends javax.swing.JFrame {
     private void b_figuraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_figuraMouseClicked
         // TODO add your handling code here:
         
+        //boton para crear una figura y se agrega al arbol de articulos
+        
         try {
             Color c;
             
@@ -1796,7 +1849,6 @@ public class MainLab extends javax.swing.JFrame {
         //validacion de clau
         
             if (clau()) {
-               articulo.add(x);
                
                //agregar elementos al arbol
                 
@@ -1807,14 +1859,14 @@ public class MainLab extends javax.swing.JFrame {
 
                 
                 for (int i = 0; i < raiz.getChildCount(); i++) {
-                    if (raiz.getChildAt(i).toString().equals("Comic")) {
+                    if (raiz.getChildAt(i).toString().equals("Figuras")) {
                         DefaultMutableTreeNode nodo =(DefaultMutableTreeNode) raiz.getChildAt(i);
                         nodo.add(nodo_figuras);
                     } //fin if
                 } //fin for  
                 m.reload(); //resetear el arbol
             
-            JOptionPane.showMessageDialog(this, "Comic almacenado exitosamente");
+            JOptionPane.showMessageDialog(this, "Figura almacenado exitosamente");
 
            
 
@@ -1844,6 +1896,111 @@ public class MainLab extends javax.swing.JFrame {
         
                              
     }//GEN-LAST:event_b_figuraMouseClicked
+
+    private void jt_articulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_articulosMouseClicked
+        // right click en el arbol de los articulos donde se agarra el nodo seleccionado que esta global y dependiendo
+        //del tipo de articulo que es se va instanciar de esa manera el objeto articulo_seleccionado
+        
+        if (evt.isMetaDown()) {
+            //seleccionar un nodo con click derecho
+            int row = jt_articulos.getClosestRowForLocation(evt.getX(), evt.getY()); //seleccionar el elemento más cercano
+            jt_articulos.setSelectionRow(row);
+            Object v1 = jt_articulos.getSelectionPath().getLastPathComponent(); //objeto del nodo seleccionado
+            nodo_seleccionado = (DefaultMutableTreeNode) v1; //convertir a nodo
+            
+            
+            if (nodo_seleccionado.getUserObject() instanceof Comic) { //si ese nodo es un pais entonces...
+                articulo_seleccionado = (Comic) nodo_seleccionado.getUserObject();
+                menu_articulos.show(evt.getComponent(), //aparece el menu solo si se cumple la condición
+                        evt.getX(), evt.getY());
+            }else if(nodo_seleccionado.getUserObject() instanceof Juegos){
+                articulo_seleccionado = (Juegos) nodo_seleccionado.getUserObject();
+                menu_articulos.show(evt.getComponent(),evt.getX(), evt.getY());//aparece el menu solo si se cumple la condición
+            }else if(nodo_seleccionado.getUserObject() instanceof Figuras){
+                articulo_seleccionado = (Figuras) nodo_seleccionado.getUserObject();
+                menu_articulos.show(evt.getComponent(),evt.getX(), evt.getY());//aparece el menu solo si se cumple la condición
+            }
+                
+        }
+    }//GEN-LAST:event_jt_articulosMouseClicked
+
+    private void jt_personasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_personasMouseClicked
+        // right click en el arbol de las personas donde se agarra el nodo seleccionado que esta global y dependiendo
+        //del tipo de articulo que es se va instanciar de esa manera el objeto persona_seleccionada
+        if (evt.isMetaDown()) {
+            //seleccionar un nodo con click derecho
+            int row = jt_personas.getClosestRowForLocation(evt.getX(), evt.getY()); //seleccionar el elemento más cercano
+            jt_personas.setSelectionRow(row);
+            Object v1 = jt_personas.getSelectionPath().getLastPathComponent(); //objeto del nodo seleccionado
+            nodo_seleccionado = (DefaultMutableTreeNode) v1; //convertir a nodo
+            
+            
+            if (nodo_seleccionado.getUserObject() instanceof Gerente) { //si ese nodo es un pais entonces...
+                persona_seleccionada = (Gerente) nodo_seleccionado.getUserObject();
+                menu_personas.show(evt.getComponent(), //aparece el menu solo si se cumple la condición
+                        evt.getX(), evt.getY());
+            }else if(nodo_seleccionado.getUserObject() instanceof General){
+                persona_seleccionada = (General) nodo_seleccionado.getUserObject();
+                menu_personas.show(evt.getComponent(),evt.getX(), evt.getY());//aparece el menu solo si se cumple la condición
+            }
+                
+        }
+    }//GEN-LAST:event_jt_personasMouseClicked
+
+    private void modificarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarArtActionPerformed
+        // menu item que deja modificar el titulo del articulo
+        
+        DefaultTreeModel m = (DefaultTreeModel) jt_articulos.getModel();
+        articulo_seleccionado.setTitulo(
+                JOptionPane.showInputDialog("Titulo:"));
+        m.reload();
+    }//GEN-LAST:event_modificarArtActionPerformed
+
+    private void eliminarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarArtActionPerformed
+        //menu item que deja eliminar el elemento seleccionado del arbol
+        
+        int response = JOptionPane.showConfirmDialog( //confirm para eliminar
+                this,
+                "Seguro de Eliminar?",
+                "Confirm",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.OK_OPTION) {
+            DefaultTreeModel m
+                    = (DefaultTreeModel) jt_articulos.getModel();
+            m.removeNodeFromParent(
+                    nodo_seleccionado);
+            m.reload(); //siempre hacer reload del modelo
+        }
+    }//GEN-LAST:event_eliminarArtActionPerformed
+
+    private void modificarPerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarPerActionPerformed
+        //menu item que deja modificar el nombre de la persona
+        
+         DefaultTreeModel m = (DefaultTreeModel) jt_personas.getModel();
+        persona_seleccionada.setNombre(
+                JOptionPane.showInputDialog("Nombre:"));
+        m.reload();
+    }//GEN-LAST:event_modificarPerActionPerformed
+
+    private void eliminarPerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarPerActionPerformed
+        // menu item que deja eliminar la persona seleccionada del arbol
+        int response = JOptionPane.showConfirmDialog( //confirm para eliminar
+                this,
+                "Seguro de Eliminar?",
+                "Confirm",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.OK_OPTION) {
+            DefaultTreeModel m
+                    = (DefaultTreeModel) jt_personas.getModel();
+            m.removeNodeFromParent(
+                    nodo_seleccionado);
+            m.reload(); //siempre hacer reload del modelo
+        }
+    }//GEN-LAST:event_eliminarPerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2113,12 +2270,13 @@ public class MainLab extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField tf_volumen;
     // End of variables declaration//GEN-END:variables
 
-
-    ArrayList<Personas> persona = new ArrayList();
-    ArrayList<Articulos> articulo = new ArrayList();
-    ArrayList<Mensajes> mensaje = new ArrayList();
     
-    //metodo para clau123
+    //variables globales que sirven para pode hacer la modificacion y eliminacion de los arboles
+    DefaultMutableTreeNode nodo_seleccionado;
+    Articulos articulo_seleccionado;
+    Personas persona_seleccionada;
+    
+    //metodo para la password de clau123
     static boolean clau(){
         
         boolean c;
